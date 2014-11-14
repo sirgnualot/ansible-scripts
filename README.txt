@@ -4,4 +4,4 @@ This is a short ansible script that you can use to install linux, apache, php, a
 
 http://docs.ansible.com/intro.html
 
-
+You are also going to need to use ssh to do anything in Ansible, so there is that to keep in mind.
