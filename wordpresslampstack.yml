@@ -1,0 +1,39 @@
+# lamp.yml
+---
+- hosts: all
+  tasks:
+ 
+    - name: Boot strap python-xml
+      zypper: name="python-xml" state=present
+
+    - name: Add repositories wordpress 
+      zypper_repository: repo=http://download.opensuse.org/repositories/server:/php:/applications/openSUSE_13.1/ name=test state=present disable_gpg_check=yes
+
+
+    - name: Install required packages dependencies
+      zypper: name={{ item }} state=present
+      with_items:
+       - apache2
+       - apache2-mod_php5
+       - php5-mysql
+       - php5 
+       - mariadb
+       - mariadb-tools
+       - phpMyAdmin
+       - wordpress
+       - python-mysql
+    
+    - name: restart apache2
+      command: systemctl restart apache2.service
+
+    - name: start Apache
+      service: name=apache2 state=running enabled=yes
+
+    - name: start SQL DB 
+      service: name=mysql state=running enabled=yes
+
+    - name: update packages
+      command: zypper lu   
+     
+    - name: configure the DB 
+      mysql_user: name=root password=sln priv=*.*:ALL state=present 
